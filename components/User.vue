@@ -1,0 +1,15 @@
+<template>
+  <nuxt-link to="/profile">
+    <v-progress-circular :value="30" size="35" width="2">
+      <v-badge bottom offset-x="10" offset-y="10" content="3" color="grey">
+        <v-avatar size="27" color="orange">
+          <v-icon small dark>mdi-account-circle</v-icon>
+        </v-avatar>
+      </v-badge>
+    </v-progress-circular>
+  </nuxt-link>
+</template>
+
+<script>
+export default {}
+</script>
