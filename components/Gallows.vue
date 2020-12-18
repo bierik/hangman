@@ -1,15 +1,8 @@
 <template>
   <div class="frame">
-    <div v-if="stage >= 1" class="noose hangman-part" />
-    <div v-if="stage >= 5" class="left-arm hangman-part" />
-    <div v-if="stage >= 6" class="right-arm hangman-part" />
-    <div v-if="stage >= 7" class="left-leg hangman-part" />
-    <div v-if="stage >= 8" class="right-leg hangman-part" />
-    <div v-if="stage >= 4" class="shorts hangman-part" />
-    <div v-if="stage >= 3" class="shirt hangman-part" />
-    <div v-if="stage >= 2" class="head hangman-part" />
-    <div v-if="stage >= 9" class="head-worried hangman-part" />
-    <div v-if="stage >= 10" class="head-dead hangman-part" />
+    <template v-for="(bodyPart, index) in bodyParts">
+      <div v-if="stage >= index + 1" :key="bodyPart" :class="`${bodyPart} hangman-part`" />
+    </template>
   </div>
 </template>
 
@@ -17,6 +10,22 @@
 import { mapState } from 'vuex'
 
 export default {
+  data() {
+    return {
+      bodyParts: [
+        'noose',
+        'head',
+        'shirt',
+        'shorts',
+        'left-arm',
+        'right-arm',
+        'left-leg',
+        'right-leg',
+        'head-worried',
+        'head-dead',
+      ],
+    }
+  },
   computed: {
     ...mapState('game', ['stage']),
   },
@@ -41,6 +50,7 @@ export default {
   height: 119px;
   left: 149px;
   top: 15px;
+  z-index: 1;
 }
 .head {
   background-image: url('~assets/images/gallows/head.png');
@@ -48,6 +58,7 @@ export default {
   height: 119px;
   left: 113px;
   top: 42px;
+  z-index: 4;
 }
 .head-dead {
   background-image: url('~assets/images/gallows/head-dead.png');
@@ -55,6 +66,7 @@ export default {
   height: 119px;
   left: 113px;
   top: 42px;
+  z-index: 6;
 }
 .head-worried {
   background-image: url('~assets/images/gallows/head-worried.png');
@@ -62,6 +74,7 @@ export default {
   height: 119px;
   left: 113px;
   top: 42px;
+  z-index: 5;
 }
 .shirt {
   background-image: url('~assets/images/gallows/shirt.png');
@@ -69,6 +82,7 @@ export default {
   height: 119px;
   left: 97px;
   top: 144px;
+  z-index: 3;
 }
 .shorts {
   background-image: url('~assets/images/gallows/shorts.png');
@@ -76,6 +90,7 @@ export default {
   height: 54px;
   left: 128px;
   top: 253px;
+  z-index: 3;
 }
 .left-arm {
   background-image: url('~assets/images/gallows/leftarm.png');
@@ -83,6 +98,7 @@ export default {
   height: 87px;
   left: 61px;
   top: 183px;
+  z-index: 2;
 }
 .right-arm {
   background-image: url('~assets/images/gallows/rightarm.png');
@@ -90,6 +106,7 @@ export default {
   height: 89px;
   left: 223px;
   top: 183px;
+  z-index: 2;
 }
 .left-leg {
   background-image: url('~assets/images/gallows/leftleg.png');
@@ -97,6 +114,7 @@ export default {
   height: 76px;
   left: 121px;
   top: 301px;
+  z-index: 2;
 }
 .right-leg {
   background-image: url('~assets/images/gallows/rightleg.png');
@@ -104,5 +122,6 @@ export default {
   height: 76px;
   left: 188px;
   top: 301px;
+  z-index: 2;
 }
 </style>

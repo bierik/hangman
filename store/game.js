@@ -1,26 +1,41 @@
 import upperCase from 'lodash/upperCase'
 
-export const state = () => ({
-  stage: 0,
-  text: '',
-  guessedChars: [],
-  started: false,
-})
+const MAX_STAGE = 10
+const TRY_MODE = process.env.TRY_MODE === 'true'
+
+function defaultState() {
+  return {
+    stage: 0,
+    text: '',
+    guessedChars: [],
+    started: false,
+    gameAvailable: false,
+    failed: false,
+    initialized: false,
+  }
+}
+
+export const state = defaultState
 
 export const mutations = {
   increaseStage(state) {
     state.stage++
+    if (state.stage >= MAX_STAGE) {
+      this.dispatch('game/failedGuess')
+    }
   },
   resetStage(state) {
     state.stage = 0
   },
   guessChar(state, char) {
-    if (!this.getters['game/text'].includes(char)) {
+    state.guessedChars.push(char)
+    if (this.getters['game/isTextGuessed']) {
+      this.commit('game/stop')
+    } else if (!this.getters['game/text'].includes(char)) {
       this.commit('game/increaseStage')
     } else {
       this.commit('timer/resetTimer')
     }
-    state.guessedChars.push(char)
   },
   start(state) {
     state.started = true
@@ -33,16 +48,27 @@ export const mutations = {
     state.text = text
     state.guessedChars = []
   },
+  failedGuess(state) {
+    state.failed = true
+  },
+  reset(state) {
+    Object.assign(state, defaultState())
+  },
 }
 
 export const actions = {
   async init({ commit }) {
-    const text = await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve('Blumenstrauss')
-      }, 1000)
-    })
-    commit('init', { text })
+    const {
+      data: { text },
+    } = await this.$axios.get('guess_text/random/')
+    commit('init', { text: TRY_MODE ? 'Aal' : text })
+  },
+  async successGuess({ commit }) {
+    commit('stop')
+  },
+  async failedGuess({ commit }) {
+    commit('stop')
+    commit('failedGuess')
   },
 }
 
@@ -52,6 +78,19 @@ export const getters = {
   },
   text(state) {
     return upperCase(state.text)
+  },
+  isTextGuessed(_, { guessedChars, text }) {
+    if (!guessedChars.length && !text.length) {
+      return false
+    }
+    return (
+      Array.from(text).reduce((accum, char) => {
+        if (guessedChars.includes(char)) {
+          return accum + 1
+        }
+        return accum
+      }, 0) === text.length
+    )
   },
   guessedText(_, { guessedChars, text }) {
     return Array.from(text)

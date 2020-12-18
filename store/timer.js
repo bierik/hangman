@@ -11,11 +11,10 @@ export const mutations = {
     }
   },
   startTimer(state) {
-    state.timer = setInterval(() => this.commit('timer/increaseTimer'), 200)
+    state.timer = setInterval(() => this.commit('timer/increaseTimer'), 50)
   },
   stopTimer(state) {
     clearInterval(state.timer)
-    this.commit('timer/resetValue')
   },
   resetValue(state) {
     state.value = 0
@@ -24,6 +23,9 @@ export const mutations = {
     this.commit('timer/stopTimer')
     setTimeout(() => {
       timerCallback()
+      if (this.state.game.failed) {
+        return
+      }
       this.commit('timer/resetValue')
       setTimeout(() => {
         this.commit('timer/startTimer')

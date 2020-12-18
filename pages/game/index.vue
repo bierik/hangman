@@ -18,11 +18,12 @@ export default {
   },
   methods: {
     ...mapActions('game', ['init']),
-    ...mapMutations('game', ['stop']),
+    ...mapMutations('game', ['stop', 'reset']),
   },
   beforeRouteLeave(to, from, next) {
-    this.stop()
     next()
+    this.stop()
+    this.reset()
   },
 }
 </script>

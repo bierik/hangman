@@ -3,7 +3,7 @@
     <v-btn
       v-for="key in keys"
       :key="key.char"
-      :class="{ disabled: key.isGuessed }"
+      :disabled="key.isGuessed"
       class="key pa-1"
       small
       dark
@@ -34,7 +34,7 @@ export default {
   margin: 2px;
 }
 
-.key.disabled {
+.theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined).key:disabled {
   background-color: rgba(39, 39, 39, 0.8) !important;
   color: rgba(255, 255, 255, 0.4) !important;
 }
