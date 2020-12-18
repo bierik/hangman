@@ -19,7 +19,7 @@
       <v-divider />
       <v-card-actions class="d-flex justify-center py-4">
         <v-btn
-          v-if="!failed && !isTextGuessed"
+          v-if="!hasFailed && !isTextGuessed"
           tile
           block
           depressed
@@ -39,27 +39,27 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('game', ['started', 'failed', 'text']),
-    ...mapGetters('game', ['initialized', 'isTextGuessed']),
+    ...mapState('game', ['started', 'text']),
+    ...mapGetters('game', ['initialized', 'isTextGuessed', 'hasFailed']),
     message() {
-      if (!this.initialized && !this.failed && !this.isTextGuessed) {
+      if (!this.initialized && !this.hasFailed && !this.isTextGuessed) {
         return 'Wird geladen…'
-      } else if (this.initialized && !this.failed && !this.isTextGuessed) {
+      } else if (this.initialized && !this.hasFailed && !this.isTextGuessed) {
         return 'Bereit'
-      } else if (this.failed && !this.isTextGuessed) {
+      } else if (this.hasFailed && !this.isTextGuessed) {
         return 'Schade!'
-      } else if (this.isTextGuessed && !this.failed) {
+      } else if (this.isTextGuessed && !this.hasFailed) {
         return 'Juhuuu! Geschafft!'
       }
       return ''
     },
     submessage() {
       if (this.initialized) {
-        if (this.initialized && !this.failed && !this.isTextGuessed) {
+        if (this.initialized && !this.hasFailed && !this.isTextGuessed) {
           return 'Los gehts!'
-        } else if (this.failed && !this.isTextGuessed) {
+        } else if (this.hasFailed && !this.isTextGuessed) {
           return `Richtig wäre "${this.text}"`
-        } else if (this.isTextGuessed && !this.failed) {
+        } else if (this.isTextGuessed && !this.hasFailed) {
           return 'Viel Spass mit den Preisen'
         }
       }
@@ -67,18 +67,18 @@ export default {
     },
     icon() {
       if (this.initialized) {
-        if (!this.failed && !this.isTextGuessed) {
+        if (!this.hasFailed && !this.isTextGuessed) {
           return 'mdi-check-circle-outline'
-        } else if (this.isTextGuessed && !this.failed) {
+        } else if (this.isTextGuessed && !this.hasFailed) {
           return 'mdi-party-popper'
-        } else if (!this.isTextGuessed && this.failed) {
+        } else if (!this.isTextGuessed && this.hasFailed) {
           return 'mdi-emoticon-dead-outline'
         }
       }
       return ''
     },
     showOverlay() {
-      return !this.started || this.isTextGuessed || this.failed
+      return !this.started || this.isTextGuessed || this.hasFailed
     },
   },
   methods: {

@@ -10,7 +10,6 @@ function defaultState() {
     guessedChars: [],
     started: false,
     gameAvailable: false,
-    failed: false,
     initialized: false,
   }
 }
@@ -48,9 +47,6 @@ export const mutations = {
     state.text = text
     state.guessedChars = []
   },
-  failedGuess(state) {
-    state.failed = true
-  },
   reset(state) {
     Object.assign(state, defaultState())
   },
@@ -64,11 +60,12 @@ export const actions = {
     commit('init', { text: TRY_MODE ? 'Aal' : text })
   },
   async successGuess({ commit }) {
+    // TODO post to backend that game is over
     commit('stop')
   },
   async failedGuess({ commit }) {
+    // TODO post to backend that game is over
     commit('stop')
-    commit('failedGuess')
   },
 }
 
@@ -91,6 +88,9 @@ export const getters = {
         return accum
       }, 0) === text.length
     )
+  },
+  hasFailed(state, { isTextGuessed }) {
+    return state.stage >= MAX_STAGE && !isTextGuessed
   },
   guessedText(_, { guessedChars, text }) {
     return Array.from(text)
