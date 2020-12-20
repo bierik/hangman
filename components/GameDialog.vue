@@ -19,7 +19,7 @@
       <v-divider />
       <v-card-actions class="d-flex justify-center py-4">
         <v-btn
-          v-if="!hasFailed && !isTextGuessed"
+          v-if="!hasFailed && !isWordGuessed && available"
           tile
           block
           depressed
@@ -39,27 +39,31 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('game', ['started', 'text']),
-    ...mapGetters('game', ['initialized', 'isTextGuessed', 'hasFailed']),
+    ...mapState('game', ['started', 'word', 'available', 'initialized']),
+    ...mapGetters('game', ['isWordGuessed', 'hasFailed']),
     message() {
-      if (!this.initialized && !this.hasFailed && !this.isTextGuessed) {
+      if (!this.initialized && !this.hasFailed && !this.isWordGuessed) {
         return 'Wird geladen…'
-      } else if (this.initialized && !this.hasFailed && !this.isTextGuessed) {
+      } else if (this.initialized && !this.available) {
+        return 'Awww!'
+      } else if (this.initialized && !this.hasFailed && !this.isWordGuessed) {
         return 'Bereit'
-      } else if (this.hasFailed && !this.isTextGuessed) {
+      } else if (this.hasFailed && !this.isWordGuessed) {
         return 'Schade!'
-      } else if (this.isTextGuessed && !this.hasFailed) {
+      } else if (this.isWordGuessed && !this.hasFailed) {
         return 'Juhuuu! Geschafft!'
       }
       return ''
     },
     submessage() {
       if (this.initialized) {
-        if (this.initialized && !this.hasFailed && !this.isTextGuessed) {
+        if (this.initialized && !this.available) {
+          return 'Du hast heute schon gespielt.'
+        } else if (this.initialized && !this.hasFailed && !this.isWordGuessed) {
           return 'Los gehts!'
-        } else if (this.hasFailed && !this.isTextGuessed) {
-          return `Richtig wäre "${this.text}"`
-        } else if (this.isTextGuessed && !this.hasFailed) {
+        } else if (this.hasFailed && !this.isWordGuessed) {
+          return `Richtig wäre "${this.word}"`
+        } else if (this.isWordGuessed && !this.hasFailed) {
           return 'Viel Spass mit den Preisen'
         }
       }
@@ -67,18 +71,20 @@ export default {
     },
     icon() {
       if (this.initialized) {
-        if (!this.hasFailed && !this.isTextGuessed) {
-          return 'mdi-check-circle-outline'
-        } else if (this.isTextGuessed && !this.hasFailed) {
+        if (!this.available) {
+          return 'mdi-emoticon-cry-outline'
+        } else if (!this.hasFailed && !this.isWordGuessed) {
+          return 'mdi-emoticon-excited-outline'
+        } else if (this.isWordGuessed && !this.hasFailed) {
           return 'mdi-party-popper'
-        } else if (!this.isTextGuessed && this.hasFailed) {
+        } else if (!this.isWordGuessed && this.hasFailed) {
           return 'mdi-emoticon-dead-outline'
         }
       }
       return ''
     },
     showOverlay() {
-      return !this.started || this.isTextGuessed || this.hasFailed
+      return !this.started || this.isWordGuessed || this.hasFailed || !this.available
     },
   },
   methods: {

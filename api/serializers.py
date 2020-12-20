@@ -1,11 +1,9 @@
-from django.db import models
 from rest_framework.serializers import Serializer
 from rest_framework import fields
-from api.models import GuessText
+from api.models import Guess
 
-class GuessTextSerializer(Serializer):
-    text = fields.CharField()
-    length = fields.IntegerField()
+class GuessSerializer(Serializer):
+    word = fields.CharField()
 
     class Meta:
-        model = GuessText
+        model = Guess

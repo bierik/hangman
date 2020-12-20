@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="d-flex justify-center py-2" width="100%" height="40px">
-    <span v-for="(char, index) in guessedText" :key="`char-${index}`" class="guess-field-char">{{ char }}</span>
+    <span v-for="(char, index) in guessedWord" :key="`char-${index}`" class="guess-field-char">{{ char }}</span>
   </v-sheet>
 </template>
 
@@ -9,7 +9,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters('game', ['guessedText']),
+    ...mapGetters('game', ['guessedWord']),
   },
 }
 </script>

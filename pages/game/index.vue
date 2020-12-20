@@ -1,7 +1,7 @@
 <template>
   <div class="scene d-flex justify-center flex-column align-center">
     <GameDialog />
-    <GuessField text="putzstein" />
+    <GuessField />
     <GuessTimer />
     <v-spacer />
     <Gallows />
@@ -19,11 +19,13 @@ export default {
   methods: {
     ...mapActions('game', ['init']),
     ...mapMutations('game', ['stop', 'reset']),
+    ...mapMutations('timer', ['resetValue']),
   },
   beforeRouteLeave(to, from, next) {
     next()
     this.stop()
     this.reset()
+    this.resetValue()
   },
 }
 </script>

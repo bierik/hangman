@@ -1,4 +1,5 @@
 import upperCase from 'lodash/upperCase'
+import get from 'lodash/get'
 
 const MAX_STAGE = 10
 const TRY_MODE = process.env.TRY_MODE === 'true'
@@ -6,10 +7,10 @@ const TRY_MODE = process.env.TRY_MODE === 'true'
 function defaultState() {
   return {
     stage: 0,
-    text: '',
+    word: '',
     guessedChars: [],
     started: false,
-    gameAvailable: false,
+    available: false,
     initialized: false,
   }
 }
@@ -28,9 +29,9 @@ export const mutations = {
   },
   guessChar(state, char) {
     state.guessedChars.push(char)
-    if (this.getters['game/isTextGuessed']) {
+    if (this.getters['game/isWordGuessed']) {
       this.commit('game/stop')
-    } else if (!this.getters['game/text'].includes(char)) {
+    } else if (!this.getters['game/word'].includes(char)) {
       this.commit('game/increaseStage')
     } else {
       this.commit('timer/resetTimer')
@@ -38,26 +39,40 @@ export const mutations = {
   },
   start(state) {
     state.started = true
+    this.commit('timer/startTimer')
   },
   stop(state) {
     state.started = false
     this.commit('timer/stopTimer')
   },
-  init(state, { text }) {
-    state.text = text
+  init(state, { word = '', available = false } = {}) {
+    state.initialized = true
+    state.available = available
+    state.word = word
     state.guessedChars = []
   },
   reset(state) {
     Object.assign(state, defaultState())
   },
+  onGuessAvailable(state) {
+    state.available = false
+  },
 }
 
 export const actions = {
   async init({ commit }) {
-    const {
-      data: { text },
-    } = await this.$axios.get('guess_text/random/')
-    commit('init', { text: TRY_MODE ? 'Aal' : text })
+    try {
+      const {
+        data: { word },
+      } = await this.$axios.get('guess/random/')
+      commit('init', { word: TRY_MODE ? 'Aal' : word, available: true })
+    } catch (error) {
+      const errorCode = get(error, 'response.data.code')
+      if (errorCode === 'NO_GUESS_AVAILABLE') {
+        commit('onGuessAvailable')
+        commit('init', { available: false })
+      }
+    }
   },
   async successGuess({ commit }) {
     // TODO post to backend that game is over
@@ -73,27 +88,27 @@ export const getters = {
   guessedChars(state) {
     return state.guessedChars.map(upperCase)
   },
-  text(state) {
-    return upperCase(state.text)
+  word(state) {
+    return upperCase(state.word)
   },
-  isTextGuessed(_, { guessedChars, text }) {
-    if (!guessedChars.length && !text.length) {
+  isWordGuessed(_, { guessedChars, word }) {
+    if (!guessedChars.length && !word.length) {
       return false
     }
     return (
-      Array.from(text).reduce((accum, char) => {
+      Array.from(word).reduce((accum, char) => {
         if (guessedChars.includes(char)) {
           return accum + 1
         }
         return accum
-      }, 0) === text.length
+      }, 0) === word.length
     )
   },
-  hasFailed(state, { isTextGuessed }) {
-    return state.stage >= MAX_STAGE && !isTextGuessed
+  hasFailed(state, { isWordGuessed }) {
+    return state.stage >= MAX_STAGE && !isWordGuessed
   },
-  guessedText(_, { guessedChars, text }) {
-    return Array.from(text)
+  guessedWord(_, { guessedChars, word }) {
+    return Array.from(word)
       .map((char) => {
         if (guessedChars.includes(char)) {
           return char
@@ -110,8 +125,5 @@ export const getters = {
         const char = String.fromCharCode(key)
         return { char, isGuessed: guessedChars.includes(char) }
       })
-  },
-  initialized(state) {
-    return !!state.text
   },
 }

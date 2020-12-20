@@ -3,28 +3,11 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('game', ['started']),
     ...mapState('timer', ['value']),
-  },
-  watch: {
-    started: {
-      handler(started) {
-        if (started) {
-          this.startTimer()
-        } else {
-          this.stopTimer()
-        }
-      },
-      immediate: true,
-    },
-  },
-  methods: {
-    ...mapMutations('game', ['increaseStage']),
-    ...mapMutations('timer', ['startTimer', 'stopTimer']),
   },
 }
 </script>
