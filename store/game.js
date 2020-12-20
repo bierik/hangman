@@ -7,7 +7,7 @@ const TRY_MODE = process.env.TRY_MODE === 'true'
 function defaultState() {
   return {
     stage: 0,
-    word: '',
+    guess: null,
     guessedChars: [],
     started: false,
     available: false,
@@ -30,7 +30,7 @@ export const mutations = {
   guessChar(state, char) {
     state.guessedChars.push(char)
     if (this.getters['game/isWordGuessed']) {
-      this.commit('game/stop')
+      this.dispatch('game/successGuess')
     } else if (!this.getters['game/word'].includes(char)) {
       this.commit('game/increaseStage')
     } else {
@@ -45,10 +45,10 @@ export const mutations = {
     state.started = false
     this.commit('timer/stopTimer')
   },
-  init(state, { word = '', available = false } = {}) {
+  init(state, { guess = null, available = false } = {}) {
     state.initialized = true
     state.available = available
-    state.word = word
+    state.guess = guess
     state.guessedChars = []
   },
   reset(state) {
@@ -62,10 +62,8 @@ export const mutations = {
 export const actions = {
   async init({ commit }) {
     try {
-      const {
-        data: { word },
-      } = await this.$axios.get('guess/random/')
-      commit('init', { word: TRY_MODE ? 'Aal' : word, available: true })
+      const { data: guess } = await this.$axios.get('guess/random/')
+      commit('init', { guess: TRY_MODE ? 'Aal' : guess, available: true })
     } catch (error) {
       const errorCode = get(error, 'response.data.code')
       if (errorCode === 'NO_GUESS_AVAILABLE') {
@@ -74,13 +72,13 @@ export const actions = {
       }
     }
   },
-  async successGuess({ commit }) {
-    // TODO post to backend that game is over
+  async successGuess({ commit, state }) {
     commit('stop')
+    await this.$axios.post(`guess/${state.guess.id}/success/`)
   },
-  async failedGuess({ commit }) {
-    // TODO post to backend that game is over
+  async failedGuess({ commit, state }) {
     commit('stop')
+    await this.$axios.post(`guess/${state.guess.id}/fail/`)
   },
 }
 
@@ -89,7 +87,7 @@ export const getters = {
     return state.guessedChars.map(upperCase)
   },
   word(state) {
-    return upperCase(state.word)
+    return upperCase(get(state, 'guess.dictionary.word', ''))
   },
   isWordGuessed(_, { guessedChars, word }) {
     if (!guessedChars.length && !word.length) {

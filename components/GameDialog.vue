@@ -39,8 +39,8 @@ import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('game', ['started', 'word', 'available', 'initialized']),
-    ...mapGetters('game', ['isWordGuessed', 'hasFailed']),
+    ...mapState('game', ['started', 'available', 'initialized']),
+    ...mapGetters('game', ['isWordGuessed', 'hasFailed', 'word']),
     message() {
       if (!this.initialized && !this.hasFailed && !this.isWordGuessed) {
         return 'Wird geladen…'

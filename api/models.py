@@ -10,9 +10,7 @@ class Dictionary(models.Model):
 
     @classmethod
     def random(cls):
-        random_word = cls.objects.order_by('?').first()
-        Guess.objects.create(word=random_word)
-        return random_word
+        return cls.objects.order_by('?').first()
 
 class Guess(TimeStampedModel):
     class Status(models.TextChoices):
@@ -20,7 +18,7 @@ class Guess(TimeStampedModel):
         FAILED = 'FA', 'Gescheitert'
         RUNNING = 'RU', 'Läuft'
 
-    word = fields.TextField(verbose_name="Wort")
+    dictionary = models.ForeignKey(Dictionary, on_delete=models.PROTECT)
     status = fields.CharField(max_length=2, choices=Status.choices, default=Status.RUNNING)
 
     @classmethod
@@ -33,3 +31,11 @@ class Guess(TimeStampedModel):
         if cls.current() is None:
             return True
         return cls.current().created < next_game
+
+    def success(self):
+        self.status = self.Status.SUCCESSFUL
+        self.save()
+
+    def fail(self):
+        self.status = self.Status.FAILED
+        self.save()

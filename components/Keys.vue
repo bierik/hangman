@@ -7,7 +7,7 @@
       class="key pa-1"
       small
       dark
-      @click="guessChar(key.char)"
+      @click="makeGuess(key.char)"
       >{{ key.char }}</v-btn
     >
   </div>
@@ -15,6 +15,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import debounce from 'lodash/debounce'
 
 export default {
   computed: {
@@ -22,6 +23,9 @@ export default {
   },
   methods: {
     ...mapMutations('game', ['guessChar']),
+    makeGuess: debounce(function makeGuess(char) {
+      this.guessChar(char)
+    }, 200),
   },
 }
 </script>
