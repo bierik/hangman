@@ -22,22 +22,28 @@
     <v-divider />
     <v-list>
       <v-subheader>Spielverlauf</v-subheader>
-      <v-list-item v-for="entry in history" :key="entry.id">
-        <v-list-item-action>
-          <v-icon large>{{ statusIcon(entry) }}</v-icon>
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title>
-            {{ entry.dictionary.word.toUpperCase() }}
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            {{ entry.created | dateTimeString }}
-          </v-list-item-subtitle>
-          <v-list-item-subtitle>
-            {{ statusText(entry) }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+      <template v-if="history.length > 0">
+        <template v-for="entry in history">
+          <v-list-item :key="entry.id">
+            <v-list-item-action>
+              <v-icon large>{{ statusIcon(entry) }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ entry.dictionary.word.toUpperCase() }}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ entry.created | dateTimeString }}
+              </v-list-item-subtitle>
+              <v-list-item-subtitle>
+                <v-chip small color="primary">{{ statusText(entry) }}</v-chip>
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-divider :key="`divider-${entry.id}`" />
+        </template>
+      </template>
+      <v-subheader v-else>Du hast noch keine Spiele gespielt.</v-subheader>
     </v-list>
   </ToolbarLayout>
 </template>
@@ -48,7 +54,7 @@ import { mapState } from 'vuex'
 const STATUS_MAPPING = {
   SU: { title: 'Erfolgreich', icon: 'mdi-emoticon-happy-outline' },
   FA: { title: 'Gescheitert', icon: 'mdi-emoticon-sad-outline' },
-  RU: { title: 'Nicht gemacht', icon: 'mdi-emoticon-confused-outline' },
+  RU: { title: 'Abgebrochen', icon: 'mdi-emoticon-confused-outline' },
 }
 
 export default {

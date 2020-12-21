@@ -28,10 +28,22 @@
     </v-overlay>
     <v-tabs-items v-model="activeTab">
       <v-tab-item value="consumable" transition="fade-transition" reverse-transition="fade-transition">
-        <TrophyCard v-for="trophy in consumable" :key="trophy.id" :trophy="trophy" />
+        <template v-if="hasConsumables">
+          <TrophyCard v-for="trophy in consumable" :key="trophy.id" :trophy="trophy" />
+        </template>
+        <div class="d-flex flex-column empty-state">
+          <v-icon class="grow" size="100">mdi-gamepad-variant-outline</v-icon>
+          <span class="text-center">Du hast im Moment leider keine Preise zum öffnen. Bleib dran!</span>
+        </div>
       </v-tab-item>
       <v-tab-item value="consumed" transition="fade-transition" reverse-transition="fade-transition">
-        <TrophyCard v-for="trophy in consumed" :key="trophy.id" :trophy="trophy" />
+        <template v-if="hasConsumed">
+          <TrophyCard v-for="trophy in consumed" :key="trophy.id" :trophy="trophy" />
+        </template>
+        <div class="d-flex flex-column empty-state">
+          <v-icon class="grow" size="100">mdi-gift-outline</v-icon>
+          <span class="text-center">Du konntest leider noch keine Preise öffnen. Bleib dran!</span>
+        </div>
       </v-tab-item>
     </v-tabs-items>
   </ToolbarLayout>
@@ -49,7 +61,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('trophy', ['consumable', 'consumed', 'hasConsumables']),
+    ...mapGetters('trophy', ['consumable', 'consumed', 'hasConsumables', 'hasConsumed']),
     ...mapGetters('profile', ['hasReceivedTrophy']),
     ...mapState('profile', ['trophyReceived']),
   },
@@ -69,5 +81,9 @@ export default {
 
 .trophy-dialog {
   max-height: calc(100vh - 56px);
+}
+
+.empty-state {
+  height: 60vh;
 }
 </style>

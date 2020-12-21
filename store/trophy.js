@@ -38,4 +38,7 @@ export const getters = {
   hasConsumables(_, { consumable }) {
     return consumable.length > 0
   },
+  hasConsumed(_, { consumed }) {
+    return consumed.length > 0
+  },
 }
