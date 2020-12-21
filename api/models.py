@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
+from django.db.models import Sum
 
 
 class Dictionary(models.Model):
@@ -35,6 +36,10 @@ class Guess(TimeStampedModel):
     def successful(cls):
         return cls.objects.filter(status=cls.Status.SUCCESSFUL)
 
+    @classmethod
+    def points(cls):
+        return cls.successful().aggregate(points=Sum('dictionary__length')).get('points', 0) or 0
+
     def success(self):
         if self.status != self.Status.RUNNING:
             return
@@ -58,6 +63,25 @@ class Trophy(models.Model):
 
     def __str__(self):
         return f"{self.title}, {self.subtitle}"
+
+    def receive(self):
+        self.received_at = timezone.now()
+        self.save()
+
+    @classmethod
+    def received(cls):
+        now = timezone.now()
+        return cls.objects.filter(received_at__lte=now)
+
+    @classmethod
+    def receiveRandom(cls):
+        open = cls.objects.filter(received_at__isnull=True)
+        to_receive = open.order_by('?').first()
+        if to_receive is not None:
+            to_receive.receive()
+            to_receive.refresh_from_db()
+            return to_receive
+        return None
 
     def consume(self):
         if self.consumed_at is not None:

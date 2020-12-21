@@ -74,7 +74,13 @@ export const actions = {
   },
   async successGuess({ commit, state }) {
     commit('stop')
-    await this.$axios.post(`guess/${state.guess.id}/success/`)
+    const {
+      data: { received },
+    } = await this.$axios.post(`guess/${state.guess.id}/success/`)
+    if (received) {
+      this.dispatch('trophy/fetch')
+      this.commit('profile/receiveTrophy', received)
+    }
   },
   async failedGuess({ commit, state }) {
     commit('stop')

@@ -1,6 +1,6 @@
 <template>
   <v-overlay :value="showOverlay" class="game-dialog" z-index="10">
-    <v-card width="80vw">
+    <v-card width="80vw" light>
       <v-card-title class="d-flex flex-column align-center">
         <transition name="fade-in" mode="out-in">
           <span :key="message">{{ message }}</span>

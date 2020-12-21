@@ -6,7 +6,7 @@ from api.models import Trophy
 from api.serializers import GuessSerializer
 from api.serializers import TrophySerializer
 from rest_framework.decorators import action
-from django.utils import timezone
+from django.conf import settings
 
 class GuessViewSet(viewsets.GenericViewSet):
     queryset = Guess.objects.all()
@@ -25,7 +25,11 @@ class GuessViewSet(viewsets.GenericViewSet):
     def success(self, request, pk=None):
         guess = self.get_object()
         guess.success()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if Guess.points() >= settings.ACHIEVEMENT_COST:
+            received_trophy = Trophy.receiveRandom()
+            if received_trophy is not None:
+                return Response({ 'received': TrophySerializer(received_trophy).data })
+        return Response({ 'received': None })
 
     @action(detail=True, methods=['post'])
     def fail(self, request, pk=None):
@@ -35,12 +39,11 @@ class GuessViewSet(viewsets.GenericViewSet):
 
 
 class TrophyViewSet(viewsets.ModelViewSet):
-    queryset = Trophy.objects.all().order_by('-received_at')
+    queryset = Trophy.objects.all()
     serializer_class = TrophySerializer
 
     def list(self, request, *args, **kwargs):
-        now = timezone.now()
-        return Response(self.get_serializer(self.get_queryset().filter(received_at__lte=now), many=True).data)
+        return Response(self.get_serializer(Trophy.received().order_by('-received_at'), many=True).data)
 
     @action(detail=True, methods=['post'])
     def consume(self, request, pk=None):

@@ -5,18 +5,18 @@
       <span class="title">Profil</span>
     </template>
     <div class="d-flex align-center mb-4">
-      <v-progress-circular :value="level" size="70" width="2" class="mr-6">
-        <v-badge bottom offset-x="20" offset-y="20" content="3" color="grey" class="profile-badge">
-          <v-avatar size="62" color="orange">
-            <v-icon large>mdi-account-circle</v-icon>
-          </v-avatar>
-        </v-badge>
+      <v-progress-circular :value="level" size="74" width="4" class="mr-6">
+        <v-avatar size="62" color="orange">
+          <v-icon large>mdi-account-circle</v-icon>
+        </v-avatar>
       </v-progress-circular>
       <div class="d-flex flex-column">
         <span class="title"
           >Level:<span class="body-2 ml-1">{{ level }} / 100</span></span
         >
-        <span class="title">Preise:<span class="body-2 ml-1">3 / 24</span></span>
+        <span class="title"
+          >Preise:<span class="body-2 ml-1">{{ trophiesCount }} / {{ maxTrophiesCount }}</span></span
+        >
       </div>
     </div>
     <v-divider />
@@ -28,7 +28,7 @@ import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('profile', ['level']),
+    ...mapState('profile', ['level', 'trophiesCount', 'maxTrophiesCount']),
   },
 }
 </script>

@@ -33,10 +33,7 @@ export const getters = {
     return Object.values(state.trophies).filter((trophy) => trophy.is_consumed)
   },
   consumable(state) {
-    return Object.values(state.trophies).filter((trophy) => trophy.consumable && !trophy.is_consumed)
-  },
-  unconsumable(state) {
-    return Object.values(state.trophies).filter((trophy) => !trophy.consumable)
+    return Object.values(state.trophies).filter((trophy) => !trophy.is_consumed)
   },
   hasConsumables(_, { consumable }) {
     return consumable.length > 0
