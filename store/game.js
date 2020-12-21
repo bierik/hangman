@@ -138,4 +138,7 @@ export const getters = {
         return { char, isGuessed: guessedChars.includes(char) }
       })
   },
+  countGuessChars(state) {
+    return get(state, 'guess.dictionary.word.length', 0)
+  },
 }

@@ -40,7 +40,7 @@ import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 export default {
   computed: {
     ...mapState('game', ['started', 'available', 'initialized']),
-    ...mapGetters('game', ['isWordGuessed', 'hasFailed', 'word']),
+    ...mapGetters('game', ['isWordGuessed', 'hasFailed', 'word', 'countGuessChars']),
     message() {
       if (!this.initialized && !this.hasFailed && !this.isWordGuessed) {
         return 'Wird geladen…'
@@ -60,7 +60,7 @@ export default {
         if (this.initialized && !this.available) {
           return 'Du hast heute schon gespielt.'
         } else if (this.initialized && !this.hasFailed && !this.isWordGuessed) {
-          return 'Los gehts!'
+          return `Wort mit ${this.countGuessChars} Buchstaben`
         } else if (this.hasFailed && !this.isWordGuessed) {
           return `Richtig wäre "${this.word}"`
         } else if (this.isWordGuessed && !this.hasFailed) {
