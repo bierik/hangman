@@ -57,6 +57,10 @@ export default {
 
   proxy: ['http://localhost:8000/api'],
 
+  router: {
+    middleware: ['profile'],
+  },
+
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/variables.scss'],

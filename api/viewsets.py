@@ -2,8 +2,11 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 from api.models import Dictionary
 from api.models import Guess
+from api.models import Trophy
 from api.serializers import GuessSerializer
+from api.serializers import TrophySerializer
 from rest_framework.decorators import action
+from django.utils import timezone
 
 class GuessViewSet(viewsets.GenericViewSet):
     queryset = Guess.objects.all()
@@ -29,3 +32,12 @@ class GuessViewSet(viewsets.GenericViewSet):
         guess = self.get_object()
         guess.fail()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class TrophyViewSet(viewsets.ModelViewSet):
+    queryset = Trophy.objects.all()
+    serializer_class = TrophySerializer
+
+    def list(self, request, *args, **kwargs):
+        now = timezone.now()
+        return Response(self.get_serializer(self.get_queryset().filter(received_at__lte=now), many=True).data)

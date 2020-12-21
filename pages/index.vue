@@ -35,3 +35,15 @@
     </v-card>
   </ToolbarLayout>
 </template>
+<script>
+import { mapState } from 'vuex'
+
+export default {
+  fetch({ store }) {
+    store.dispatch('trophy/fetch')
+  },
+  computed: {
+    ...mapState('trophy', ['trophies']),
+  },
+}
+</script>

@@ -1,12 +1,12 @@
 from django.db import models
-from django.db.models import fields
+from django.db.models.fields import BLANK_CHOICE_DASH
 from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
 
 
 class Dictionary(models.Model):
-    word = fields.TextField(verbose_name="Wort")
-    length = fields.IntegerField(verbose_name="Länge")
+    word = models.TextField(verbose_name="Wort")
+    length = models.IntegerField(verbose_name="Länge")
 
     @classmethod
     def random(cls):
@@ -19,7 +19,7 @@ class Guess(TimeStampedModel):
         RUNNING = 'RU', 'Läuft'
 
     dictionary = models.ForeignKey(Dictionary, on_delete=models.PROTECT)
-    status = fields.CharField(max_length=2, choices=Status.choices, default=Status.RUNNING)
+    status = models.CharField(max_length=2, choices=Status.choices, default=Status.RUNNING)
 
     @classmethod
     def current(cls):
@@ -32,6 +32,10 @@ class Guess(TimeStampedModel):
             return True
         return cls.current().created < next_game
 
+    @classmethod
+    def successful(cls):
+        return cls.objects.filter(status=cls.Status.SUCCESSFUL)
+
     def success(self):
         self.status = self.Status.SUCCESSFUL
         self.save()
@@ -39,3 +43,15 @@ class Guess(TimeStampedModel):
     def fail(self):
         self.status = self.Status.FAILED
         self.save()
+
+class Trophy(models.Model):
+    received_at = models.DateTimeField(verbose_name="Erhalten am", blank=True, null=True)
+    title = models.TextField(verbose_name="Titel")
+    subtitle = models.TextField(verbose_name="Untertitel")
+    consumable = models.BooleanField(verbose_name="Verbrauchbar")
+    consumed_at = models.DateTimeField(verbose_name="Verbraucht am", blank=True, null=True)
+    link = models.URLField(verbose_name="Link", blank=True, null=True)
+    file = models.ImageField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.title}, {self.subtitle}"

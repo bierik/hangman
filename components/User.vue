@@ -1,6 +1,6 @@
 <template>
   <nuxt-link to="/profile">
-    <v-progress-circular :value="30" size="35" width="2">
+    <v-progress-circular :value="level" size="35" width="2">
       <v-badge bottom offset-x="10" offset-y="10" content="3" color="grey">
         <v-avatar size="27" color="orange">
           <v-icon small dark>mdi-account-circle</v-icon>
@@ -11,5 +11,11 @@
 </template>
 
 <script>
-export default {}
+import { mapState } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState('profile', ['level']),
+  },
+}
 </script>

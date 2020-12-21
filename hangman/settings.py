@@ -13,6 +13,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'django_extensions',
     "rest_framework",
+    'storages',
     "api",
 ]
 MIDDLEWARE = [
@@ -47,6 +48,14 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+AWS_STORAGE_BUCKET_NAME = 'hangman-bucket'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'hangman.storage_backends.MediaStorage'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 WHITENOISE_ROOT = STATIC_ROOT
 STATIC_URL = "/static/"
@@ -67,6 +76,8 @@ TEMPLATES = [
         },
     }
 ]
+
+ACHIEVEMENT_COST = 100
 
 django_heroku.settings(locals())
 
