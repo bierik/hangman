@@ -18,7 +18,7 @@ class GuessSerializer(ModelSerializer):
 
     class Meta:
         model = Guess
-        fields = ('id', 'status', 'dictionary')
+        fields = ('id', 'status', 'dictionary', 'created')
 
 
 class TrophySerializer(ModelSerializer):

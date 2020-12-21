@@ -8,8 +8,8 @@ from api.serializers import TrophySerializer
 from rest_framework.decorators import action
 from django.conf import settings
 
-class GuessViewSet(viewsets.GenericViewSet):
-    queryset = Guess.objects.all()
+class GuessViewSet(viewsets.ModelViewSet):
+    queryset = Guess.objects.all().order_by('-created')
     serializer_class = GuessSerializer
 
     @action(detail=False, methods=['get'])
