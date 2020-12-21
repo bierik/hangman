@@ -1,3 +1,8 @@
 a {
     text-decoration: none;
 }
+
+/* Fix for weird css order in production */
+.v-item-group.v-bottom-navigation .v-btn {
+    height: inherit !important;
+}
