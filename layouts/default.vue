@@ -1,9 +1,9 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-main>
       <nuxt />
     </v-main>
-    <v-bottom-navigation app dark>
+    <v-bottom-navigation app>
       <v-btn to="/" nuxt>
         <span>Preise</span>
         <v-icon>mdi-trophy</v-icon>

@@ -8,7 +8,7 @@
       <v-progress-circular :value="level" size="70" width="2" class="mr-6">
         <v-badge bottom offset-x="20" offset-y="20" content="3" color="grey" class="profile-badge">
           <v-avatar size="62" color="orange">
-            <v-icon large dark>mdi-account-circle</v-icon>
+            <v-icon large>mdi-account-circle</v-icon>
           </v-avatar>
         </v-badge>
       </v-progress-circular>

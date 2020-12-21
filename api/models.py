@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.fields import BLANK_CHOICE_DASH
 from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
 
@@ -37,10 +36,14 @@ class Guess(TimeStampedModel):
         return cls.objects.filter(status=cls.Status.SUCCESSFUL)
 
     def success(self):
+        if self.status != self.Status.RUNNING:
+            return
         self.status = self.Status.SUCCESSFUL
         self.save()
 
     def fail(self):
+        if self.status != self.Status.RUNNING:
+            return
         self.status = self.Status.FAILED
         self.save()
 
@@ -55,3 +58,9 @@ class Trophy(models.Model):
 
     def __str__(self):
         return f"{self.title}, {self.subtitle}"
+
+    def consume(self):
+        if self.consumed_at is not None:
+            return
+        self.consumed_at = timezone.now()
+        self.save()

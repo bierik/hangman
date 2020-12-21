@@ -35,9 +35,16 @@ class GuessViewSet(viewsets.GenericViewSet):
 
 
 class TrophyViewSet(viewsets.ModelViewSet):
-    queryset = Trophy.objects.all()
+    queryset = Trophy.objects.all().order_by('-received_at')
     serializer_class = TrophySerializer
 
     def list(self, request, *args, **kwargs):
         now = timezone.now()
         return Response(self.get_serializer(self.get_queryset().filter(received_at__lte=now), many=True).data)
+
+    @action(detail=True, methods=['post'])
+    def consume(self, request, pk=None):
+        trophy = self.get_object()
+        trophy.consume()
+        trophy.refresh_from_db()
+        return Response(self.get_serializer(trophy).data)
