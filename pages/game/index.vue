@@ -17,8 +17,8 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('game', ['init']),
-    ...mapMutations('game', ['stop', 'reset']),
+    ...mapActions('game', ['init', 'stop']),
+    ...mapMutations('game', ['reset']),
     ...mapMutations('timer', ['resetValue']),
   },
   beforeRouteLeave(to, from, next) {

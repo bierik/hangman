@@ -18,7 +18,7 @@ class GuessViewSet(viewsets.ModelViewSet):
             return Response(
                 data={ 'code': 'NO_GUESS_AVAILABLE', 'message': 'Es ist heute kein Versuch mehr möglich.' }, status=status.HTTP_400_BAD_REQUEST
             )
-        guess = Guess.objects.create(dictionary=Dictionary.random())
+        guess = Guess.random()
         return Response(GuessSerializer(guess).data)
 
     @action(detail=True, methods=['post'])
@@ -35,6 +35,18 @@ class GuessViewSet(viewsets.ModelViewSet):
     def fail(self, request, pk=None):
         guess = self.get_object()
         guess.fail()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['post'])
+    def start(self, request, pk=None):
+        guess = self.get_object()
+        guess.start()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['post'])
+    def stop(self, request, pk=None):
+        guess = self.get_object()
+        guess.stop()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

@@ -29,7 +29,8 @@
               <v-icon large>{{ statusIcon(entry) }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>
+              <v-list-item-title v-if="needsCover(entry)">-</v-list-item-title>
+              <v-list-item-title v-else>
                 {{ entry.dictionary.word.toUpperCase() }}
               </v-list-item-title>
               <v-list-item-subtitle>
@@ -54,7 +55,8 @@ import { mapState } from 'vuex'
 const STATUS_MAPPING = {
   SU: { title: 'Erfolgreich', icon: 'mdi-emoticon-happy-outline' },
   FA: { title: 'Gescheitert', icon: 'mdi-emoticon-sad-outline' },
-  RU: { title: 'Abgebrochen', icon: 'mdi-emoticon-confused-outline' },
+  RU: { title: 'Läuft', icon: 'mdi-emoticon-confused-outline' },
+  CR: { title: 'Läuft', icon: 'mdi-emoticon-confused-outline' },
 }
 
 export default {
@@ -71,6 +73,9 @@ export default {
     },
     statusIcon(historyEntry) {
       return STATUS_MAPPING[historyEntry.status].icon
+    },
+    needsCover(historyEntry) {
+      return historyEntry.status === 'RU' || historyEntry.status === 'CR'
     },
   },
 }

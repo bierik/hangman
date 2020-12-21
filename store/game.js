@@ -86,6 +86,14 @@ export const actions = {
     commit('stop')
     await this.$axios.post(`guess/${state.guess.id}/fail/`)
   },
+  async start({ commit, state }) {
+    await this.$axios.post(`guess/${state.guess.id}/start/`)
+    commit('start')
+  },
+  async stop({ commit, state }) {
+    await this.$axios.post(`guess/${state.guess.id}/stop/`)
+    commit('stop')
+  },
 }
 
 export const getters = {

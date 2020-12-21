@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
 from django.db.models import Sum
+from django.db.models import Q
 
 
 class Dictionary(models.Model):
@@ -17,20 +18,20 @@ class Guess(TimeStampedModel):
         SUCCESSFUL = 'SU', 'Geglückt'
         FAILED = 'FA', 'Gescheitert'
         RUNNING = 'RU', 'Läuft'
+        CREATED = 'CR', 'Erstellt'
 
     dictionary = models.ForeignKey(Dictionary, on_delete=models.PROTECT)
-    status = models.CharField(max_length=2, choices=Status.choices, default=Status.RUNNING)
+    status = models.CharField(max_length=2, choices=Status.choices, default=Status.CREATED)
 
     @classmethod
     def current(cls):
-        return cls.objects.order_by('-created').first()
+        return cls.objects.filter().order_by('-created').first()
 
     @classmethod
     def available(cls):
-        next_game = timezone.now().replace(hour=7, minute=0, second=0, microsecond=0)
-        if cls.current() is None:
-            return True
-        return cls.current().created < next_game
+        current_game = timezone.now().replace(hour=7, minute=0, second=0, microsecond=0)
+        already_played = cls.objects.filter(Q(status=cls.Status.SUCCESSFUL) | Q(status=cls.Status.FAILED), created__gte=current_game)
+        return not already_played.exists()
 
     @classmethod
     def successful(cls):
@@ -40,6 +41,15 @@ class Guess(TimeStampedModel):
     def points(cls):
         return cls.successful().aggregate(points=Sum('dictionary__length')).get('points', 0) or 0
 
+    @classmethod
+    def random(cls):
+        previous_game = timezone.now().replace(hour=7, minute=0, second=0, microsecond=0)
+        cls.objects.filter(Q(status=cls.Status.RUNNING) | Q(status=cls.Status.CREATED), created__lte=previous_game).update(status=cls.Status.FAILED)
+        maybe_running = cls.objects.filter(Q(status=cls.Status.RUNNING) | Q(status=cls.Status.CREATED), created__gte=previous_game)
+        if maybe_running.exists():
+            return maybe_running.first()
+        return Guess.objects.create(dictionary=Dictionary.random())
+
     def success(self):
         if self.status != self.Status.RUNNING:
             return
@@ -47,6 +57,18 @@ class Guess(TimeStampedModel):
         self.save()
 
     def fail(self):
+        if self.status != self.Status.RUNNING:
+            return
+        self.status = self.Status.FAILED
+        self.save()
+
+    def start(self):
+        if self.status != self.Status.CREATED:
+            return
+        self.status = self.Status.RUNNING
+        self.save()
+
+    def stop(self):
         if self.status != self.Status.RUNNING:
             return
         self.status = self.Status.FAILED
