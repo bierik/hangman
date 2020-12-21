@@ -3,9 +3,9 @@
     <GameDialog />
     <GuessField />
     <GuessTimer />
-    <v-spacer />
-    <Gallows />
+    <Gallows class="my-2" />
     <Keys />
+    <v-spacer />
   </div>
 </template>
 

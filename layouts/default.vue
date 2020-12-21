@@ -16,6 +16,10 @@
         <span>Profil</span>
         <v-icon>mdi-account</v-icon>
       </v-btn>
+      <v-btn to="/instructions" nuxt>
+        <span>Über</span>
+        <v-icon>mdi-file-document-outline</v-icon>
+      </v-btn>
     </v-bottom-navigation>
   </v-app>
 </template>

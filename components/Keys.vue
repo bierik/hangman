@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-wrap justify-center my-2 px-4">
+  <div class="d-flex flex-wrap justify-center px-4">
     <v-btn
       v-for="key in keys"
       :key="key.char"
@@ -31,8 +31,8 @@ export default {
 <style scoped>
 .key {
   min-width: 0 !important;
-  width: 30px !important;
-  height: 30px !important;
+  width: 35px !important;
+  height: 35px !important;
   border-radius: 0;
   margin: 2px;
 }
