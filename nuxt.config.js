@@ -76,6 +76,15 @@ export default {
     },
   },
 
+  pwa: {
+    useWebmanifestExtension: true,
+    lang: 'de',
+    meta: {
+      nativeUI: true,
+      theme_color: '#ffffff',
+    },
+  },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
 }

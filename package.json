@@ -1,5 +1,6 @@
 {
   "name": "hangman",
+  "discription": "Play hangman and receive some nice trophies.",
   "version": "1.0.0",
   "private": true,
   "scripts": {
