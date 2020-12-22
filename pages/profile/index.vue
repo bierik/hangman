@@ -12,7 +12,7 @@
       </v-progress-circular>
       <div class="d-flex flex-column">
         <span class="title"
-          >Level:<span class="body-2 ml-1">{{ level }} / 100</span></span
+          >Level:<span class="body-2 ml-1">{{ level }} / {{ achievementCost }}</span></span
         >
         <span class="title"
           >Preise:<span class="body-2 ml-1">{{ trophiesCount }} / {{ maxTrophiesCount }}</span></span
@@ -66,6 +66,7 @@ export default {
   },
   computed: {
     ...mapState('profile', ['level', 'trophiesCount', 'maxTrophiesCount']),
+    ...mapState('config', ['achievementCost']),
   },
   methods: {
     statusText(historyEntry) {

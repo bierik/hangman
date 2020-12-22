@@ -78,14 +78,17 @@ TEMPLATES = [
     }
 ]
 
-ACHIEVEMENT_COST = 100
-
 THUMBNAIL_ALIASES = {
     '': {
         'preview': {'size': (800, 600), 'crop': False},
     },
 }
 THUMBNAIL_DEFAULT_STORAGE = 'hangman.storage_backends.MediaStorage'
+
+MIN_WORD_LENGTH = 6
+MAX_WORD_LENGTH = 15
+ACHIEVEMENT_COST = 100
+TIMER_INTERVAL = 100
 
 django_heroku.settings(locals())
 

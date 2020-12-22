@@ -4,6 +4,8 @@ from django_extensions.db.models import TimeStampedModel
 from django.db.models import Sum
 from django.db.models import Q
 from easy_thumbnails.fields import ThumbnailerImageField
+from django.contrib.postgres.fields import JSONField
+from django.conf import settings
 
 
 class Dictionary(models.Model):
@@ -12,7 +14,9 @@ class Dictionary(models.Model):
 
     @classmethod
     def random(cls):
-        return cls.objects.order_by('?').first()
+        min_length = Config.default('min_word_length')
+        max_length = Config.default('max_word_length')
+        return cls.objects.filter(length__gte=min_length, length__lte=max_length).order_by('?').first()
 
 class Guess(TimeStampedModel):
     class Status(models.TextChoices):
@@ -112,3 +116,23 @@ class Trophy(models.Model):
             return
         self.consumed_at = timezone.now()
         self.save()
+
+class Config(models.Model):
+    config = JSONField(verbose_name="Konfiguration", blank=True, null=True)
+
+    @classmethod
+    def get(cls):
+        config = Config.objects.first()
+        if config is None:
+            return None
+        return config.config
+
+    @classmethod
+    def default(cls, config_name):
+        config_from_db = cls.get()
+        default_exists = hasattr(settings, config_name.upper())
+        if default_exists and config_from_db is None:
+            return getattr(settings, config_name.upper())
+        if config_from_db is not None and default_exists:
+            return config_from_db.get(config_name, getattr(settings, config_name.upper()))
+        raise NameError(f"Config with name {config_name} coult not be found.")

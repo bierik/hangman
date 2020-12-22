@@ -12,3 +12,7 @@ class GuessAdmin(admin.ModelAdmin):
 @admin.register(models.Trophy)
 class TrophyAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(models.Config)
+class ConfigAdmin(admin.ModelAdmin):
+    pass

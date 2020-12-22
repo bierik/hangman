@@ -5,7 +5,7 @@ from api.models import Trophy
 from api.serializers import GuessSerializer
 from api.serializers import TrophySerializer
 from rest_framework.decorators import action
-from django.conf import settings
+from api.models import Config
 
 class GuessViewSet(viewsets.ModelViewSet):
     queryset = Guess.objects.all().order_by('-created')
@@ -24,7 +24,7 @@ class GuessViewSet(viewsets.ModelViewSet):
     def success(self, request, pk=None):
         guess = self.get_object()
         guess.success()
-        if Guess.points() >= settings.ACHIEVEMENT_COST:
+        if Guess.points() >= Config.default('achievement_cost'):
             received_trophy = Trophy.receiveRandom()
             if received_trophy is not None:
                 return Response({ 'received': TrophySerializer(received_trophy).data })

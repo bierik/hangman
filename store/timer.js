@@ -14,7 +14,8 @@ export const mutations = {
     if (state.timer) {
       clearInterval(state.timer)
     }
-    state.timer = setInterval(() => this.commit('timer/increaseTimer'), 50)
+    const { timerInterval } = this.state.config
+    state.timer = setInterval(() => this.commit('timer/increaseTimer'), timerInterval)
   },
   stopTimer(state) {
     clearInterval(state.timer)

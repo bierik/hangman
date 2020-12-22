@@ -4,5 +4,6 @@ from api import views
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("profile/", views.ProfileView.as_view())
+    path("profile/", views.ProfileView.as_view()),
+    path("config/", views.ConfigView.as_view())
 ]
