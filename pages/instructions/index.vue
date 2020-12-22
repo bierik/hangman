@@ -18,7 +18,13 @@
 </template>
 
 <script>
-export default {}
+export default {
+  head() {
+    return {
+      title: 'Über',
+    }
+  },
+}
 </script>
 
 <style></style>

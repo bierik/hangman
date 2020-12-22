@@ -27,6 +27,11 @@ export default {
     this.reset()
     this.resetValue()
   },
+  head() {
+    return {
+      title: 'Spiel',
+    }
+  },
 }
 </script>
 <style>

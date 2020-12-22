@@ -84,6 +84,11 @@ export default {
       this.$router.replace({ path: '/', hash: '#consumable' })
     },
   },
+  head() {
+    return {
+      title: 'Preise',
+    }
+  },
 }
 </script>
 <style>

@@ -79,6 +79,11 @@ export default {
       return historyEntry.status === 'RU' || historyEntry.status === 'CR'
     },
   },
+  head() {
+    return {
+      title: 'Profil',
+    }
+  },
 }
 </script>
 
