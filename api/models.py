@@ -14,8 +14,8 @@ class Dictionary(models.Model):
 
     @classmethod
     def random(cls):
-        min_length = Config.default('min_word_length')
-        max_length = Config.default('max_word_length')
+        min_length = Config.default('MIN_WORD_LENGTH')
+        max_length = Config.default('MAX_WORD_LENGTH')
         return cls.objects.filter(length__gte=min_length, length__lte=max_length).order_by('?').first()
 
 class Guess(TimeStampedModel):
@@ -130,9 +130,9 @@ class Config(models.Model):
     @classmethod
     def default(cls, config_name):
         config_from_db = cls.get()
-        default_exists = hasattr(settings, config_name.upper())
+        default_exists = hasattr(settings, config_name)
         if default_exists and config_from_db is None:
-            return getattr(settings, config_name.upper())
+            return getattr(settings, config_name)
         if config_from_db is not None and default_exists:
-            return config_from_db.get(config_name, getattr(settings, config_name.upper()))
+            return config_from_db.get(config_name, getattr(settings, config_name))
         raise NameError(f"Config with name {config_name} coult not be found.")

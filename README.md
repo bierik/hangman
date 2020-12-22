@@ -18,3 +18,7 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## Config
+
+Make sure to get configs using `Config.default(<config-name>)` in order to receive either the default config from the `settings.py` or the overridden value in the database.

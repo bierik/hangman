@@ -8,7 +8,7 @@ from api.models import Config
 class ProfileView(APIView):
     def get(self, request, format=None):
         points = Guess.points()
-        level = points % Config.default('achievement_cost')
+        level = points % Config.default('ACHIEVEMENT_COST')
         trophies_count = Trophy.received().count()
         max_trophies_count = Trophy.objects.all().count()
         return Response(data={
@@ -21,6 +21,6 @@ class ProfileView(APIView):
 class ConfigView(APIView):
     def get(self, request, format=None):
         return Response(data={
-            'achievementCost': Config.default('achievement_cost'),
-            'timerInterval': Config.default('timer_interval'),
+            'achievementCost': Config.default('ACHIEVEMENT_COST'),
+            'timerInterval': Config.default('TIMER_INTERVAL'),
         })

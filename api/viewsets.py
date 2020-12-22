@@ -24,7 +24,7 @@ class GuessViewSet(viewsets.ModelViewSet):
     def success(self, request, pk=None):
         guess = self.get_object()
         guess.success()
-        if Guess.points() >= Config.default('achievement_cost'):
+        if Guess.points() >= Config.default('ACHIVEMENT_COST'):
             received_trophy = Trophy.receiveRandom()
             if received_trophy is not None:
                 return Response({ 'received': TrophySerializer(received_trophy).data })
