@@ -1,6 +1,5 @@
 from rest_framework import status, viewsets
 from rest_framework.response import Response
-from api.models import Dictionary
 from api.models import Guess
 from api.models import Trophy
 from api.serializers import GuessSerializer

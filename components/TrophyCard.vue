@@ -5,6 +5,9 @@
       class="white--text"
       height="200px"
       :src="trophy.file"
+      v-on="{
+        ...(trophy.expandable ? { click: () => openPhotoswipe(trophy) } : {}),
+      }"
     >
       <div v-if="trophy.is_consumed" class="consumed-indicator">
         <v-icon>mdi-gift-outline</v-icon>
@@ -35,6 +38,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import PhotoSwipe from 'photoswipe'
+import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
 
 export default {
   props: {
@@ -45,6 +50,19 @@ export default {
   },
   methods: {
     ...mapActions('trophy', ['consume']),
+    openPhotoswipe(trophy) {
+      const photoSwipeRoot = document.querySelector('#pswp')
+      const options = {}
+      const items = [
+        {
+          w: trophy.width,
+          h: trophy.height,
+          src: trophy.file,
+        },
+      ]
+      const gallery = new PhotoSwipe(photoSwipeRoot, PhotoSwipeUIDefault, items, options)
+      gallery.init()
+    },
   },
 }
 </script>

@@ -82,6 +82,7 @@ class Trophy(models.Model):
     consumed_at = models.DateTimeField(verbose_name="Verbraucht am", blank=True, null=True)
     link = models.URLField(verbose_name="Link", blank=True, null=True)
     file = models.ImageField(blank=True, null=True)
+    expandable = models.BooleanField(verbose_name="Vergrösserbar", default=False)
 
     def __str__(self):
         return f"{self.title}, {self.subtitle}"

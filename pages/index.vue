@@ -31,7 +31,7 @@
         <template v-if="hasConsumables">
           <TrophyCard v-for="trophy in consumable" :key="trophy.id" :trophy="trophy" />
         </template>
-        <div class="d-flex flex-column empty-state">
+        <div v-else class="d-flex flex-column empty-state">
           <v-icon class="grow" size="100">mdi-gamepad-variant-outline</v-icon>
           <span class="text-center">Du hast im Moment leider keine Preise zum öffnen. Bleib dran!</span>
         </div>
@@ -40,12 +40,13 @@
         <template v-if="hasConsumed">
           <TrophyCard v-for="trophy in consumed" :key="trophy.id" :trophy="trophy" />
         </template>
-        <div class="d-flex flex-column empty-state">
+        <div v-else class="d-flex flex-column empty-state">
           <v-icon class="grow" size="100">mdi-gift-outline</v-icon>
           <span class="text-center">Du konntest leider noch keine Preise öffnen. Bleib dran!</span>
         </div>
       </v-tab-item>
     </v-tabs-items>
+    <PhotoSwipeRoot />
   </ToolbarLayout>
 </template>
 <script>
