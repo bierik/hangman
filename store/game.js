@@ -91,7 +91,9 @@ export const actions = {
     commit('start')
   },
   async stop({ commit, state }) {
-    await this.$axios.post(`guess/${state.guess.id}/stop/`)
+    if (state.guess) {
+      await this.$axios.post(`guess/${state.guess.id}/stop/`)
+    }
     commit('stop')
   },
 }

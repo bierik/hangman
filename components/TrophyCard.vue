@@ -20,24 +20,27 @@
       </div>
     </v-img>
     <v-card-text>{{ trophy.subtitle }}</v-card-text>
-    <template v-if="trophy.consumable">
-      <v-divider />
-      <v-card-actions>
-        <v-btn depressed tile color="orange" text :disabled="trophy.is_consumed" @click="consume(trophy)">
-          <v-icon small class="mr-1">mdi-gift</v-icon>
-          <span>Einlösen</span>
-        </v-btn>
-        <v-spacer />
-        <span v-if="trophy.is_consumed" class="caption grey--text text--darken-1"
-          >Am {{ trophy.consumed_at | dateString }} eingelöst</span
-        >
-      </v-card-actions>
-    </template>
+    <v-card-actions v-if="trophy.consumable">
+      <v-btn
+        v-if="!trophy.is_consumed"
+        depressed
+        tile
+        color="orange"
+        text
+        :loading="consuming"
+        :disabled="consuming"
+        @click="consumeTrophy(trophy)"
+      >
+        <v-icon small class="mr-1">mdi-gift</v-icon>
+        <span>Einlösen</span>
+      </v-btn>
+      <span v-else class="caption grey--text text--darken-1">Am {{ trophy.consumed_at | dateString }} eingelöst</span>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import PhotoSwipe from 'photoswipe'
 import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
 
@@ -47,6 +50,9 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  computed: {
+    ...mapState('trophy', ['consuming']),
   },
   methods: {
     ...mapActions('trophy', ['consume']),
@@ -62,6 +68,10 @@ export default {
       ]
       const gallery = new PhotoSwipe(photoSwipeRoot, PhotoSwipeUIDefault, items, options)
       gallery.init()
+    },
+    async consumeTrophy(trophy) {
+      await this.consume(trophy)
+      this.$router.push({ hash: 'consumed' })
     },
   },
 }

@@ -2,6 +2,7 @@ function defaultState() {
   return {
     trophies: {},
     loading: true,
+    consuming: false,
   }
 }
 
@@ -22,6 +23,12 @@ export const mutations = {
   endLoad(state) {
     state.loading = false
   },
+  startConsume(state) {
+    state.consuming = true
+  },
+  endConsume(state) {
+    state.consuming = false
+  },
 }
 
 export const actions = {
@@ -32,8 +39,10 @@ export const actions = {
     commit('endLoad')
   },
   async consume({ commit }, trophy) {
+    commit('startConsume')
     const { data } = await this.$axios.post(`trophy/${trophy.id}/consume/`)
     commit('updateTrophy', data)
+    commit('endConsume')
   },
 }
 
