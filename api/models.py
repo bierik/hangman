@@ -4,11 +4,15 @@ from django_extensions.db.models import TimeStampedModel
 from django.db.models import Sum
 from django.db.models import Q
 from easy_thumbnails.fields import ThumbnailerImageField
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 from django.conf import settings
 
 
 class Dictionary(models.Model):
+    class Meta:
+        verbose_name = "Wort"
+        verbose_name_plural = "Wörter"
+
     word = models.TextField(verbose_name="Wort")
     length = models.IntegerField(verbose_name="Länge")
 
@@ -18,7 +22,14 @@ class Dictionary(models.Model):
         max_length = Config.default('MAX_WORD_LENGTH')
         return cls.objects.filter(length__gte=min_length, length__lte=max_length).order_by('?').first()
 
+    def __str__(self):
+        return self.word
+
 class Guess(TimeStampedModel):
+    class Meta:
+        verbose_name = "Versuch"
+        verbose_name_plural = "Versuche"
+
     class Status(models.TextChoices):
         SUCCESSFUL = 'SU', 'Geglückt'
         FAILED = 'FA', 'Gescheitert'
@@ -79,7 +90,14 @@ class Guess(TimeStampedModel):
         self.status = self.Status.FAILED
         self.save()
 
+    def __str__(self):
+        return f"{self.dictionary.word}, {self.get_status_display()}"
+
 class Trophy(models.Model):
+    class Meta:
+        verbose_name = "Preis"
+        verbose_name_plural = "Preise"
+
     received_at = models.DateTimeField(verbose_name="Erhalten am", blank=True, null=True)
     title = models.TextField(verbose_name="Titel")
     subtitle = models.TextField(verbose_name="Untertitel")
@@ -118,6 +136,10 @@ class Trophy(models.Model):
         self.save()
 
 class Config(models.Model):
+    class Meta:
+        verbose_name = "Konfiguration"
+        verbose_name_plural = "Konfiguration"
+
     config = JSONField(verbose_name="Konfiguration", blank=True, null=True)
 
     @classmethod
@@ -136,3 +158,6 @@ class Config(models.Model):
         if config_from_db is not None and default_exists:
             return config_from_db.get(config_name, getattr(settings, config_name))
         raise NameError(f"Config with name {config_name} coult not be found.")
+
+    def __str__(self):
+        return "Konfiguration"
