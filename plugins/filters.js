@@ -1,18 +1,19 @@
 import Vue from 'vue'
-import { DateTime } from 'luxon'
 
 Vue.filter('dateTimeString', (value) => {
-  const date = DateTime.fromISO(value)
-  if (date.isValid) {
-    return date.toFormat('dd.MM.yyyy, HH:mm')
-  }
-  return '-'
+  return new Intl.DateTimeFormat('de-CH', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(value))
 })
 
 Vue.filter('dateString', (value) => {
-  const date = DateTime.fromISO(value)
-  if (date.isValid) {
-    return date.toFormat('dd.MM.yyyy')
-  }
-  return '-'
+  return new Intl.DateTimeFormat('de-CH', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date(value))
 })
