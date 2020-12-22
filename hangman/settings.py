@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     'django_extensions',
     "rest_framework",
     'storages',
+    'easy_thumbnails',
     "api",
 ]
 MIDDLEWARE = [
@@ -78,6 +79,13 @@ TEMPLATES = [
 ]
 
 ACHIEVEMENT_COST = 100
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'preview': {'size': (800, 600), 'crop': False},
+    },
+}
+THUMBNAIL_DEFAULT_STORAGE = 'hangman.storage_backends.MediaStorage'
 
 django_heroku.settings(locals())
 

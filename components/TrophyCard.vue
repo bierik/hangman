@@ -4,7 +4,7 @@
       gradient="180deg, rgba(0,0,0,.1) 0%, rgba(0,0,0,.8) 100%"
       class="white--text"
       height="200px"
-      :src="trophy.file"
+      :src="trophy.preview"
       v-on="{
         ...(trophy.expandable ? { click: () => openPhotoswipe(trophy) } : {}),
       }"
@@ -57,7 +57,7 @@ export default {
         {
           w: trophy.width,
           h: trophy.height,
-          src: trophy.file,
+          src: trophy.image,
         },
       ]
       const gallery = new PhotoSwipe(photoSwipeRoot, PhotoSwipeUIDefault, items, options)

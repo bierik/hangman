@@ -1,11 +1,9 @@
-from django.db.models import fields
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from api.models import Guess
 from api.models import Dictionary
 from api.models import Trophy
 from django.utils import timezone
-from django.core.files.images import get_image_dimensions
 
 
 class DictionarySerializer(ModelSerializer):
@@ -23,18 +21,24 @@ class GuessSerializer(ModelSerializer):
 
 
 class TrophySerializer(ModelSerializer):
-    file = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
+    preview = serializers.SerializerMethodField()
     is_consumed = serializers.SerializerMethodField()
     width = serializers.SerializerMethodField()
     height = serializers.SerializerMethodField()
 
     class Meta:
         model = Trophy
-        fields = ('id', 'title', 'subtitle', 'consumable', 'consumed_at', 'file', 'link', 'is_consumed', 'width', 'height', 'expandable')
+        fields = ('id', 'title', 'subtitle', 'consumable', 'consumed_at', 'image', 'preview', 'link', 'is_consumed', 'expandable', 'width', 'height')
 
-    def get_file(self, obj):
-        if obj.file and hasattr(obj.file, 'url'):
-            return obj.file.url
+    def get_image(self, obj):
+        if obj.image and hasattr(obj.image, 'url'):
+            return obj.image.url
+        return None
+
+    def get_preview(self, obj):
+        if obj.image:
+            return obj.image['preview'].url
         return None
 
     def get_is_consumed(self, obj):
@@ -44,9 +48,11 @@ class TrophySerializer(ModelSerializer):
         return obj.consumed_at < now
 
     def get_width(self, obj):
-        width, _ = get_image_dimensions(obj.file)
-        return width
+        if obj.image:
+            return obj.image.width
+        return None
 
     def get_height(self, obj):
-        _, height = get_image_dimensions(obj.file)
-        return height
+        if obj.image:
+            return obj.image.height
+        return None

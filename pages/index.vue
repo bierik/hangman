@@ -28,22 +28,32 @@
     </v-overlay>
     <v-tabs-items v-model="activeTab">
       <v-tab-item value="consumable" transition="fade-transition" reverse-transition="fade-transition">
-        <template v-if="hasConsumables">
-          <TrophyCard v-for="trophy in consumable" :key="trophy.id" :trophy="trophy" />
-        </template>
-        <div v-else class="d-flex flex-column empty-state">
-          <v-icon class="grow" size="100">mdi-gamepad-variant-outline</v-icon>
-          <span class="text-center">Du hast im Moment leider keine Preise zum öffnen. Bleib dran!</span>
+        <div v-if="loading" class="d-flex justify-center py-10">
+          <v-progress-circular indeterminate width="2" color="primary" />
         </div>
+        <template v-else>
+          <template v-if="hasConsumables">
+            <TrophyCard v-for="trophy in consumable" :key="trophy.id" :trophy="trophy" />
+          </template>
+          <div v-else class="d-flex flex-column empty-state">
+            <v-icon class="grow" size="100">mdi-gamepad-variant-outline</v-icon>
+            <span class="text-center">Du hast im Moment leider keine Preise zum öffnen. Bleib dran!</span>
+          </div>
+        </template>
       </v-tab-item>
       <v-tab-item value="consumed" transition="fade-transition" reverse-transition="fade-transition">
-        <template v-if="hasConsumed">
-          <TrophyCard v-for="trophy in consumed" :key="trophy.id" :trophy="trophy" />
-        </template>
-        <div v-else class="d-flex flex-column empty-state">
-          <v-icon class="grow" size="100">mdi-gift-outline</v-icon>
-          <span class="text-center">Du konntest leider noch keine Preise öffnen. Bleib dran!</span>
+        <div v-if="loading" class="d-flex justify-center py-10">
+          <v-progress-circular indeterminate width="2" color="primary" />
         </div>
+        <template v-else>
+          <template v-if="hasConsumed">
+            <TrophyCard v-for="trophy in consumed" :key="trophy.id" :trophy="trophy" />
+          </template>
+          <div v-else class="d-flex flex-column empty-state">
+            <v-icon class="grow" size="100">mdi-gift-outline</v-icon>
+            <span class="text-center">Du konntest leider noch keine Preise öffnen. Bleib dran!</span>
+          </div>
+        </template>
       </v-tab-item>
     </v-tabs-items>
     <PhotoSwipeRoot />
@@ -65,6 +75,7 @@ export default {
     ...mapGetters('trophy', ['consumable', 'consumed', 'hasConsumables', 'hasConsumed']),
     ...mapGetters('profile', ['hasReceivedTrophy']),
     ...mapState('profile', ['trophyReceived']),
+    ...mapState('trophy', ['loading']),
   },
   methods: {
     ...mapMutations('profile', ['claimTrophy']),

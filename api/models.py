@@ -3,6 +3,7 @@ from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
 from django.db.models import Sum
 from django.db.models import Q
+from easy_thumbnails.fields import ThumbnailerImageField
 
 
 class Dictionary(models.Model):
@@ -81,7 +82,7 @@ class Trophy(models.Model):
     consumable = models.BooleanField(verbose_name="Verbrauchbar")
     consumed_at = models.DateTimeField(verbose_name="Verbraucht am", blank=True, null=True)
     link = models.URLField(verbose_name="Link", blank=True, null=True)
-    file = models.ImageField(blank=True, null=True)
+    image = ThumbnailerImageField(blank=True, null=True)
     expandable = models.BooleanField(verbose_name="Vergrösserbar", default=False)
 
     def __str__(self):
