@@ -6,3 +6,6 @@ a {
 .v-item-group.v-bottom-navigation .v-btn {
     height: inherit !important;
 }
+.theme--dark.v-tabs-items {
+    background-color: transparent !important;
+}
