@@ -18,8 +18,8 @@ INSTALLED_APPS = [
     "api",
 ]
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -59,8 +59,9 @@ DEFAULT_FILE_STORAGE = 'hangman.storage_backends.MediaStorage'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 WHITENOISE_ROOT = STATIC_ROOT
+WHITENOISE_MAX_AGE = 31536000
 STATIC_URL = "/static/"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 TEMPLATES = [
     {
