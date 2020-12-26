@@ -28,7 +28,7 @@ export default {
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/plugins/axios', '~/plugins/filters', '~/plugins/config'],
+  plugins: ['~/plugins/axios', '~/plugins/filters', '~/plugins/config', '~/plugins/adjust-directive'],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,

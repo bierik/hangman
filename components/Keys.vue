@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-wrap justify-center px-4">
+  <div class="d-flex flex-wrap justify-center px-2 mb-2">
     <v-btn
       v-for="key in keys"
       :key="key.char"

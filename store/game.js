@@ -6,7 +6,7 @@ const TRY_MODE = process.env.TRY_MODE === 'true'
 
 function defaultState() {
   return {
-    stage: 0,
+    stage: 9,
     guess: null,
     guessedChars: [],
     started: false,

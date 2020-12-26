@@ -1,11 +1,10 @@
 <template>
   <div class="scene d-flex justify-center flex-column align-center">
-    <GameDialog />
+    <!-- <GameDialog /> -->
     <GuessField />
     <GuessTimer />
-    <Gallows class="my-2" />
+    <Gallows />
     <Keys />
-    <v-spacer />
   </div>
 </template>
 
