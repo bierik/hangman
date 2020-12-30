@@ -6,6 +6,7 @@ from api.serializers import GuessSerializer
 from api.serializers import TrophySerializer
 from rest_framework.decorators import action
 from api.models import Config
+import math
 
 class GuessViewSet(viewsets.ModelViewSet):
     queryset = Guess.objects.all().order_by('-created')
@@ -23,8 +24,10 @@ class GuessViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def success(self, request, pk=None):
         guess = self.get_object()
+        prev_level = math.floor(Guess.points() / Config.default('ACHIEVEMENT_COST'))
         guess.success()
-        if Guess.points() >= Config.default('ACHIEVEMENT_COST'):
+        new_level = math.floor(Guess.points() / Config.default('ACHIEVEMENT_COST'))
+        if new_level > prev_level:
             received_trophy = Trophy.receiveRandom()
             if received_trophy is not None:
                 return Response({ 'received': TrophySerializer(received_trophy).data })
