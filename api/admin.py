@@ -3,11 +3,12 @@ from api import models
 
 @admin.register(models.Dictionary)
 class DictionaryAdmin(admin.ModelAdmin):
-    pass
+    ordering = ['word']
+    search_fields = ['word']
 
 @admin.register(models.Guess)
 class GuessAdmin(admin.ModelAdmin):
-    pass
+    autocomplete_fields = ['dictionary']
 
 @admin.register(models.Trophy)
 class TrophyAdmin(admin.ModelAdmin):
