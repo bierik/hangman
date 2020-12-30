@@ -1,3 +1,4 @@
+from datetime import timedelta
 from django.db import models
 from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
@@ -45,9 +46,12 @@ class Guess(TimeStampedModel):
 
     @classmethod
     def available(cls):
-        current_game = timezone.now().replace(hour=7, minute=0, second=0, microsecond=0)
-        already_played = cls.objects.filter(Q(status=cls.Status.SUCCESSFUL) | Q(status=cls.Status.FAILED), created__gte=current_game)
-        return not already_played.exists()
+        last_game_played = cls.objects.filter(Q(status=cls.Status.SUCCESSFUL) | Q(status=cls.Status.FAILED)).order_by('-created').first()
+        if not last_game_played:
+            return True
+        range_from = last_game_played.created.replace(hour=7, minute=0, second=0, microsecond=0)
+        range_to = last_game_played.created.replace(hour=7, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        return not cls.objects.filter(Q(status=cls.Status.SUCCESSFUL) | Q(status=cls.Status.FAILED), created__gte=range_from, created__lte=range_to).exists()
 
     @classmethod
     def successful(cls):
