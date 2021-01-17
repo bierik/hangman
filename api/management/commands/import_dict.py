@@ -8,7 +8,7 @@ def is_valid_file(parser, arg):
     if not os.path.exists(arg):
         parser.error(f"The file {arg} does not exist!")
     else:
-        return open(arg, 'r', encoding="ISO-8859-1")
+        return open(arg, 'r', encoding="UTF-8")
 
 pattern = re.compile("[A-Za-z]+")
 
