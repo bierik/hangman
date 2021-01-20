@@ -51,7 +51,11 @@ class Guess(TimeStampedModel):
             return True
         range_from = last_game_played.created.replace(hour=7, minute=0, second=0, microsecond=0)
         range_to = last_game_played.created.replace(hour=7, minute=0, second=0, microsecond=0) + timedelta(days=1)
-        return not cls.objects.filter(Q(status=cls.Status.SUCCESSFUL) | Q(status=cls.Status.FAILED), created__gte=range_from, created__lte=range_to).exists()
+        has_played_in_range = cls.objects.filter(Q(status=cls.Status.SUCCESSFUL) | Q(status=cls.Status.FAILED), created__gte=range_from, created__lte=range_to).exists()
+        if timezone.now() < range_to and has_played_in_range:
+            return False
+        return True
+        
 
     @classmethod
     def successful(cls):
