@@ -6,24 +6,35 @@
     <v-bottom-navigation app>
       <v-btn to="/" nuxt>
         <span>Preise</span>
-        <v-icon>mdi-trophy</v-icon>
+        <v-icon>{{ mdiTrophy }}</v-icon>
       </v-btn>
       <v-btn to="/game" nuxt>
         <span>Spiel</span>
-        <v-icon>mdi-dice-5</v-icon>
+        <v-icon>{{ mdiDice5 }}</v-icon>
       </v-btn>
       <v-btn to="/profile" nuxt>
         <span>Profil</span>
-        <v-icon>mdi-account</v-icon>
+        <v-icon>{{ mdiAccount }}</v-icon>
       </v-btn>
       <v-btn to="/instructions" nuxt>
         <span>Über</span>
-        <v-icon>mdi-file-document-outline</v-icon>
+        <v-icon>{{ mdiFileDocumentOutline }}</v-icon>
       </v-btn>
     </v-bottom-navigation>
   </v-app>
 </template>
 
 <script>
-export default {}
+import { mdiTrophy, mdiDice5, mdiAccount, mdiFileDocumentOutline } from '@mdi/js'
+
+export default {
+  data() {
+    return {
+      mdiTrophy,
+      mdiDice5,
+      mdiAccount,
+      mdiFileDocumentOutline,
+    }
+  },
+}
 </script>

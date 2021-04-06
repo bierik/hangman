@@ -1,7 +1,7 @@
 <template>
   <ToolbarLayout>
     <template #toolbar>
-      <v-icon class="mr-1">mdi-file-document-outline</v-icon>
+      <v-icon class="mr-1">{{ mdiFileDocumentOutline }}</v-icon>
       <span class="title">Über das Spiel</span>
     </template>
     <p>
@@ -13,12 +13,22 @@
       zu retten, erhältst du Punkte entsprechend der Länge des gesuchten Wortes. Du kannst aber maximal nur ein Spiel
       pro Tag bestreiten. Der Timer wird jeweils jeden Tag um 07:00 zurückgesetzt.
     </p>
-    <p>Ich wünsche dir ganz viel Spass und Erfolg beim Rätseln. <v-icon>mdi-party-popper</v-icon></p>
+    <p>
+      Ich wünsche dir ganz viel Spass und Erfolg beim Rätseln. <v-icon>{{ mdiPartyPopper }}</v-icon>
+    </p>
   </ToolbarLayout>
 </template>
 
 <script>
+import { mdiFileDocumentOutline, mdiPartyPopper } from '@mdi/js'
+
 export default {
+  data() {
+    return {
+      mdiFileDocumentOutline,
+      mdiPartyPopper,
+    }
+  },
   head() {
     return {
       title: 'Über',

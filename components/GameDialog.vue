@@ -36,6 +36,7 @@
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
+import { mdiEmoticonCryOutline, mdiEmoticonExcitedOutline, mdiPartyPopper, mdiEmoticonDeadOutline } from '@mdi/js'
 
 export default {
   computed: {
@@ -72,13 +73,13 @@ export default {
     icon() {
       if (this.initialized) {
         if (!this.available) {
-          return 'mdi-emoticon-cry-outline'
+          return mdiEmoticonCryOutline
         } else if (!this.hasFailed && !this.isWordGuessed) {
-          return 'mdi-emoticon-excited-outline'
+          return mdiEmoticonExcitedOutline
         } else if (this.isWordGuessed && !this.hasFailed) {
-          return 'mdi-party-popper'
+          return mdiPartyPopper
         } else if (!this.isWordGuessed && this.hasFailed) {
-          return 'mdi-emoticon-dead-outline'
+          return mdiEmoticonDeadOutline
         }
       }
       return ''

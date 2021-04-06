@@ -10,11 +10,11 @@
       }"
     >
       <div v-if="trophy.is_consumed" class="consumed-indicator">
-        <v-icon>mdi-gift-outline</v-icon>
+        <v-icon>{{ mdiGiftOutline }}</v-icon>
       </div>
       <div class="d-flex fill-height flex-column">
         <div class="d-flex align-items justify-center flex-grow-1">
-          <v-icon v-if="trophy.link" x-large>mdi-play</v-icon>
+          <v-icon v-if="trophy.link" x-large>{{ mdiPlay }}</v-icon>
         </div>
         <v-card-title>{{ trophy.title }}</v-card-title>
       </div>
@@ -31,7 +31,7 @@
         :disabled="consuming"
         @click="consumeTrophy(trophy)"
       >
-        <v-icon small class="mr-1">mdi-gift</v-icon>
+        <v-icon small class="mr-1">{{ mdiGift }}</v-icon>
         <span>Einlösen</span>
       </v-btn>
       <span v-else class="caption grey--text text--darken-1">Am {{ trophy.consumed_at | dateString }} eingelöst</span>
@@ -43,6 +43,7 @@
 import { mapActions, mapState } from 'vuex'
 import PhotoSwipe from 'photoswipe'
 import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
+import { mdiGift, mdiPlay, mdiGiftOutline } from '@mdi/js'
 
 export default {
   props: {
@@ -50,6 +51,13 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      mdiGift,
+      mdiPlay,
+      mdiGiftOutline,
+    }
   },
   computed: {
     ...mapState('trophy', ['consuming']),
@@ -86,7 +94,7 @@ export default {
   background-color: #388e3c;
   clip-path: polygon(100% 0, 0 0, 100% 100%);
 }
-.consumed-indicator > i {
+.consumed-indicator > .v-icon {
   position: absolute !important;
   right: 10px;
   top: 10px;

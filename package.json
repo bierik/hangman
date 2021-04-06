@@ -23,6 +23,7 @@
   "devDependencies": {
     "@4tw/eslint-config": "^0.6.0",
     "@4tw/prettier-config": "^1.0.3",
+    "@mdi/js": "^5.9.55",
     "@nuxtjs/proxy": "^2.0.1",
     "@nuxtjs/vuetify": "^1.11.2",
     "@types/matter-js": "^0.14.7",

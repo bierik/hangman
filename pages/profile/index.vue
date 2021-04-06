@@ -1,13 +1,13 @@
 <template>
   <ToolbarLayout>
     <template #toolbar>
-      <v-icon class="mr-1">mdi-account</v-icon>
+      <v-icon class="mr-1">{{ mdiAccount }}</v-icon>
       <span class="title">Profil</span>
     </template>
     <div class="d-flex align-center mb-4">
       <v-progress-circular :value="level" size="74" width="4" class="mr-6">
         <v-avatar size="62" color="orange">
-          <v-icon large>mdi-account-circle</v-icon>
+          <v-icon large>{{ mdiAccountCircle }}</v-icon>
         </v-avatar>
       </v-progress-circular>
       <div class="d-flex flex-column">
@@ -51,18 +51,31 @@
 
 <script>
 import { mapState } from 'vuex'
+import {
+  mdiAccount,
+  mdiAccountCircle,
+  mdiEmoticonHappyOutline,
+  mdiEmoticonSadOutline,
+  mdiEmoticonConfusedOutline,
+} from '@mdi/js'
 
 const STATUS_MAPPING = {
-  SU: { title: 'Erfolgreich', icon: 'mdi-emoticon-happy-outline' },
-  FA: { title: 'Gescheitert', icon: 'mdi-emoticon-sad-outline' },
-  RU: { title: 'Läuft', icon: 'mdi-emoticon-confused-outline' },
-  CR: { title: 'Läuft', icon: 'mdi-emoticon-confused-outline' },
+  SU: { title: 'Erfolgreich', icon: mdiEmoticonHappyOutline },
+  FA: { title: 'Gescheitert', icon: mdiEmoticonSadOutline },
+  RU: { title: 'Läuft', icon: mdiEmoticonConfusedOutline },
+  CR: { title: 'Läuft', icon: mdiEmoticonConfusedOutline },
 }
 
 export default {
   async asyncData({ $axios }) {
     const { data: history } = await $axios.get('guess/')
     return { history }
+  },
+  data() {
+    return {
+      mdiAccount,
+      mdiAccountCircle,
+    }
   },
   computed: {
     ...mapState('profile', ['level', 'trophiesCount', 'maxTrophiesCount']),

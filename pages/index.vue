@@ -1,7 +1,7 @@
 <template>
   <ToolbarLayout>
     <template #toolbar>
-      <v-icon class="mr-1">mdi-trophy</v-icon>
+      <v-icon class="mr-1">{{ mdiTrophy }}</v-icon>
       <span class="title">Preise</span>
     </template>
     <template #top>
@@ -36,7 +36,7 @@
             <TrophyCard v-for="trophy in consumable" :key="trophy.id" :trophy="trophy" />
           </template>
           <div v-else class="d-flex flex-column empty-state">
-            <v-icon class="grow" size="100">mdi-gamepad-variant-outline</v-icon>
+            <v-icon class="grow" size="100">{{ mdiGamepadVariantOutline }}</v-icon>
             <span class="text-center">Du hast im Moment leider keine Preise zum öffnen. Bleib dran!</span>
           </div>
         </template>
@@ -50,7 +50,7 @@
             <TrophyCard v-for="trophy in consumed" :key="trophy.id" :trophy="trophy" />
           </template>
           <div v-else class="d-flex flex-column empty-state">
-            <v-icon class="grow" size="100">mdi-gift-outline</v-icon>
+            <v-icon class="grow" size="100">{{ mdiGiftOutline }}</v-icon>
             <span class="text-center">Du konntest leider noch keine Preise öffnen. Bleib dran!</span>
           </div>
         </template>
@@ -61,6 +61,7 @@
 </template>
 <script>
 import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mdiTrophy, mdiGamepadVariantOutline, mdiGiftOutline } from '@mdi/js'
 
 export default {
   fetch({ store }) {
@@ -69,6 +70,9 @@ export default {
   data() {
     return {
       activeTab: null,
+      mdiTrophy,
+      mdiGamepadVariantOutline,
+      mdiGiftOutline,
     }
   },
   computed: {
