@@ -16,23 +16,18 @@
     "@nuxtjs/pwa": "^3.0.2",
     "core-js": "^3.6.5",
     "lodash": "^4.17.20",
-    "matter-js": "^0.14.2",
     "nuxt": "^2.14.6",
     "photoswipe": "^4.1.3"
   },
   "devDependencies": {
-    "@4tw/eslint-config": "^0.6.0",
+    "@4tw/eslint-config": "^3.0.0",
     "@4tw/prettier-config": "^1.0.3",
-    "@mdi/js": "^5.9.55",
+    "@mdi/js": "^6.7.96",
     "@nuxtjs/proxy": "^2.0.1",
     "@nuxtjs/vuetify": "^1.11.2",
-    "@types/matter-js": "^0.14.7",
-    "@vue/test-utils": "^1.1.0",
     "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "^26.5.0",
-    "eslint": "^7.15.0",
-    "jest": "^26.5.0",
-    "prettier": "^2.2.1",
-    "vue-jest": "^3.0.4"
+    "babel-jest": "^28.1.1",
+    "eslint": "^8.17.0",
+    "prettier": "^2.2.1"
   }
 }
