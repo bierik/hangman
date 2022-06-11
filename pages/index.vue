@@ -60,19 +60,24 @@
   </ToolbarLayout>
 </template>
 <script>
-import { mapGetters, mapMutations, mapState } from 'vuex'
 import { mdiTrophy, mdiGamepadVariantOutline, mdiGiftOutline } from '@mdi/js'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
-  fetch({ store }) {
-    store.dispatch('trophy/fetch')
-  },
   data() {
     return {
       activeTab: null,
       mdiTrophy,
       mdiGamepadVariantOutline,
       mdiGiftOutline,
+    }
+  },
+  fetch({ store }) {
+    store.dispatch('trophy/fetch')
+  },
+  head() {
+    return {
+      title: 'Preise',
     }
   },
   computed: {
@@ -87,11 +92,6 @@ export default {
       this.claimTrophy()
       this.$router.replace({ path: '/', hash: '#consumable' })
     },
-  },
-  head() {
-    return {
-      title: 'Preise',
-    }
   },
 }
 </script>

@@ -1,5 +1,5 @@
-import upperCase from 'lodash/upperCase'
 import get from 'lodash/get'
+import upperCase from 'lodash/upperCase'
 
 const MAX_STAGE = 10
 const TRY_MODE = process.env.TRY_MODE === 'true'

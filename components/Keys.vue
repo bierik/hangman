@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
 import debounce from 'lodash/debounce'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   computed: {

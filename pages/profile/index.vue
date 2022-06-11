@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import {
   mdiAccount,
   mdiAccountCircle,
@@ -58,6 +57,7 @@ import {
   mdiEmoticonSadOutline,
   mdiEmoticonConfusedOutline,
 } from '@mdi/js'
+import { mapState } from 'vuex'
 
 const STATUS_MAPPING = {
   SU: { title: 'Erfolgreich', icon: mdiEmoticonHappyOutline },
@@ -77,6 +77,11 @@ export default {
       mdiAccountCircle,
     }
   },
+  head() {
+    return {
+      title: 'Profil',
+    }
+  },
   computed: {
     ...mapState('profile', ['level', 'trophiesCount', 'maxTrophiesCount']),
     ...mapState('config', ['achievementCost']),
@@ -91,11 +96,6 @@ export default {
     needsCover(historyEntry) {
       return historyEntry.status === 'RU' || historyEntry.status === 'CR'
     },
-  },
-  head() {
-    return {
-      title: 'Profil',
-    }
   },
 }
 </script>

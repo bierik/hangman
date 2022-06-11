@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import { mdiAccountCircle } from '@mdi/js'
+import { mapState } from 'vuex'
 
 export default {
   data() {

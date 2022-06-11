@@ -13,7 +13,7 @@
         <v-icon>{{ mdiGiftOutline }}</v-icon>
       </div>
       <div class="d-flex fill-height flex-column">
-        <div class="d-flex align-items justify-center flex-grow-1">
+        <div class="d-flex align-center justify-center flex-grow-1">
           <v-icon v-if="trophy.link" x-large>{{ mdiPlay }}</v-icon>
         </div>
         <v-card-title>{{ trophy.title }}</v-card-title>
@@ -40,10 +40,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mdiGift, mdiPlay, mdiGiftOutline } from '@mdi/js'
 import PhotoSwipe from 'photoswipe'
 import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
-import { mdiGift, mdiPlay, mdiGiftOutline } from '@mdi/js'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   props: {

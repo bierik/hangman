@@ -13,24 +13,24 @@
 import { mapActions, mapMutations } from 'vuex'
 
 export default {
-  fetch() {
-    this.init()
-  },
-  methods: {
-    ...mapActions('game', ['init', 'stop']),
-    ...mapMutations('game', ['reset']),
-    ...mapMutations('timer', ['resetValue']),
-  },
   beforeRouteLeave(to, from, next) {
     next()
     this.stop()
     this.reset()
     this.resetValue()
   },
+  fetch() {
+    this.init()
+  },
   head() {
     return {
       title: 'Spiel',
     }
+  },
+  methods: {
+    ...mapActions('game', ['init', 'stop']),
+    ...mapMutations('game', ['reset']),
+    ...mapMutations('timer', ['resetValue']),
   },
 }
 </script>

@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import { mdiEmoticonCryOutline, mdiEmoticonExcitedOutline, mdiPartyPopper, mdiEmoticonDeadOutline } from '@mdi/js'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
